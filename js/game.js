@@ -230,17 +230,18 @@ let engine = (function (){
     }
   }
 
-  function damagePlayer(){
+  function damagePlayer() {
     let res = 0;
     player.health--;
     multipler = 1;
-    if (player.health == 0){
-      stopGame(); res = 1;
-    }
-    else{
+    if (player.health == 0) {
+      stopGame(); 
+      res = 1;
+    } else {
       player.changeAction(act.damaged);
       sounds.hurt.play();
     }
+    localStorage.setItem("gameEvent", "damagePlayer");
     return res;
   }
 
@@ -526,72 +527,70 @@ let engine = (function (){
 
   function applyGesture(g) {
     let i, r, b = 0, result = 0;
-    if (isActive){
-      if (g){
+    if (isActive) {
+      if (g) {
         for (i = enemies.length - 1; i >= 0; i--) {
-          if (enemies[i].active && enemies[i].action != act.die){
+          if (enemies[i].active && enemies[i].action != act.die) {
             r = enemies[i].checkGesture(g);
-            if (r == 1){
+            if (r == 1) {
               result += 10;
-            }
-            else if (r == 2){
+            } else if (r == 2) {
               result += 20;
             }
           }
         }
-        if (bonus != null){b = bonus.checkGesture(g);}
-        if (result == 0 && b == 0){
-          multipler = 1;
+        if (bonus != null) {
+          b = bonus.checkGesture(g);
         }
-        else{
+        if (result == 0 && b == 0) {
+          multipler = 1;
+        } else {
           sounds.gesture.play();
-          if (multipler < 7.5){
+          if (multipler < 7.5) {
             multipler += 0.25;
           }
         }
-        if (b == 2){
-          if (bonus.type == bonusType.cherry){
+        if (b == 2) {
+          if (bonus.type == bonusType.cherry) {
             for (i = enemies.length - 1; i >= 0; i--) {
-              if (enemies[i].active && enemies[i].action != act.die){
+              if (enemies[i].active && enemies[i].action != act.die) {
                 enemies[i].changeAction(act.die);
                 result += 50;
               }
             }
-          }
-          else if (bonus.type == bonusType.apple){
+          } else if (bonus.type == bonusType.apple) {
             for (i = enemies.length - 1; i >= 0; i--) {
-              if (enemies[i].active && enemies[i].action != act.die){
+              if (enemies[i].active && enemies[i].action != act.die) {
                 enemies[i].changeAction(act.idle);
               }
             }
           }
         }
-
-        score += Math.floor(result*multipler);
-        if (level == -1){
-          if (enemies.length == 0){
+  
+        score += Math.floor(result * multipler);
+        if (level == -1) {
+          if (enemies.length == 0) {
             level = 0;
           }
-        }
-        else{
-          if (level < log2(score>>10)){
-            level++; generateTimeout -= 5;
-            if (player.health < 3){
-              if (level&1){
+        } else {
+          if (level < log2(score >> 10)) {
+            level++;
+            generateTimeout -= 5;
+            if (player.health < 3) {
+              if (level & 1) {
                 player.health++;
                 sounds.extralive.play();
               }
-            }
-            else{
-              score += 100*level;
+            } else {
+              score += 100 * level;
             }
           }
         }
         scoreDisplay.innerHTML = score;
-      }
-      else{
+      } else {
         multipler = 1;
       }
+      localStorage.setItem("gameEvent", "applyGesture");
     }
   }
 
