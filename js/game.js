@@ -455,6 +455,7 @@ let engine = (function (){
       level = 0;
       tick();
     }
+    localStorage.setItem("gameEvent", "start");
   }
 
   function stopGame(){
@@ -484,6 +485,7 @@ let engine = (function (){
     startButton.classList.remove('hidden');
     scoreBlock.classList.add('hidden');
     startButton.focus();
+    localStorage.setItem("gameEvent", "stop");
   }
 
   function init(){
@@ -655,6 +657,30 @@ let engine = (function (){
     player:         player,
 
   };
+
+  // Escuchar eventos de almacenamiento local para enviar al servidor
+window.addEventListener("storage", function(event) {
+  // Verificar si el evento de almacenamiento local es relevante para enviar al servidor
+  if (event.key === "gameEvent") {
+    // Enviar el evento al servidor local
+    fetch("http://localhost:3000/game-event", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ event: event.newValue }) // Enviar el evento al servidor como JSON
+    })
+    .then(response => {
+      // Manejar la respuesta del servidor
+      console.log("Evento enviado al servidor:", event.newValue);
+    })
+    .catch(error => {
+      // Manejar errores si la solicitud falla
+      console.error("Error al enviar evento al servidor:", error);
+    });
+  }
+});
+
 
   return _engine;
 }());
