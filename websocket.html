@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DemoWebsockets_AntiPacman</title>
+</head>
+<body>
+    <h1>DemoWebsockets_AntiPacman</h1>
+    <input type="button" id="btnSend" value="Send" />
+    <script>
+        var data = {
+            game: 'Pacman',
+            event: 'posicion',
+            player: 'Jose',
+            value: 150
+        };
+        data.value = data.value + 1;
+        console.log(data.toString());
+       
+        var dataJson = JSON.stringify(data);
+        console.log(dataJson);
+        var obj2 = JSON.parse(dataJson);
+        obj2.value = obj2.value + 1;
+        console.log(obj2.value);
+       
+        //var dataDemo = '{"game": "Pacman","event": "posicion","player": "Jose",   "value": 150}';
+        var ws = new WebSocket('wss://gamehubmanager.azurewebsites.net/ws');
+       
+        ws.addEventListener('open', function (event) {
+            console.log('Conectado!');
+            var dataJson = JSON.stringify(data);
+           
+            ws.send(dataJson);
+           
+        });  
+        ws.addEventListener('message', function (event) {
+            console.log('Mensaje recibido: ', event.data);
+            var response = JSON.parse(event.data);
+            console.log(response);
+        });
+        document.getElementById('btnSend').addEventListener('click', function () {
+            ws.send(dataJson);
+        });
+     </script>
+</body>
+</html>
