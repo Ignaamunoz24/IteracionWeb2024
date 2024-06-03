@@ -51,19 +51,47 @@
 
 
     <script>
-        var data = {
-            game: 'Pacman',
-            event: 'posicion',
-            player: 'Jose',
-            value: 150
-        };
+        //jugador 
+
+        var player= localStorage.getItem('player');
+        
+        if (typeof player=== 'undefined'
+            || player == null){
+
+            //player= prompt('ingrese su nombre');
+            localStorage.setItem('player', player);
+        }
+
+        function getRandomString()
+        {
+            var chars= 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+            var string_length= 5;
+            var randomstring= '';
+            for (var i=0 ; i <string_length; i++)
+            {
+                var rnum= Math.floor(Math.random()* chars.length);
+                randomstring += chars.substring(rnum, rnum+1);
+            } 
+            return randomstring;
+
+        }
+
+        console.log('Player', player);
+
+
+
 
         var data = {
             game: 'Pacman',
             event: 'posicion',
-            player: 'Maria',
-            value: 350
+            player: 'Jose',
+            value: 150,
+            
         };
+
+        
+
+        
         data.value = data.value + 1;
         console.log(data.toString());
        

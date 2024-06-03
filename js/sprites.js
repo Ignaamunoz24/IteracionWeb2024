@@ -12,6 +12,8 @@ const bonusType = {
   apple:  1,
 }
 
+
+
 class Sprite{
   constructor(x, y,width, height, orient){
     this.x = x;
