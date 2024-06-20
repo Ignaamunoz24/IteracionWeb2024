@@ -35,6 +35,17 @@ function getSectionOrient(a, b){
   }
   return result;
 }
+function checkGesture(g) {
+  let r = 0;
+  // Aquí se implementa la lógica para verificar gestos basados en los datos del giroscopio
+  // Por ejemplo, si gamma es positivo, ejecuta un gesto específico.
+  if (gamma > 0 && g === gestures.swypeRight) {
+    // Realiza alguna acción específica basada en este gesto y en la orientación del dispositivo
+    r = 1;
+  }
+  return r;
+}
+
 
 function cogniteGesture(path){
   let i, j, k, ol, result = 0;

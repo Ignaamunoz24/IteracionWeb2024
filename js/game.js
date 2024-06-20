@@ -72,6 +72,17 @@ let engine = (function (){
     localStorage.setItem('sound', canSound);
     for (let prop in sounds) { sounds[prop].mute(!canSound); }
   }
+  
+  window.addEventListener('deviceorientation', handleOrientation);
+  function handleOrientation(event) {
+    // Accede a los datos de orientación del dispositivo
+    let alpha = event.alpha; // Dirección en grados desde el norte magnético
+    let beta = event.beta; // Inclinación hacia adelante y hacia atrás del dispositivo
+    let gamma = event.gamma; // Inclinación hacia los lados del dispositivo
+    console.log(alpha,beta,gamma);
+  }
+    
+  
 
   function generateMap(){
     let i,j,k,s,r,l;
@@ -489,6 +500,8 @@ let engine = (function (){
     localStorage.setItem("gameEvent", "stop");
   }
 
+  
+
   function init(){
     realWidth  = canvasM.scrollWidth;
     realHeight = canvasM.scrollHeight;
@@ -507,6 +520,7 @@ let engine = (function (){
     
     updateCanvasSize(true);
     generateMap();
+    //handleOrientation();
 
     enemyPositions = [[Math.ceil((map.width - 0.5)*tileXsize), Math.ceil((map.height/2 - 0.5)*tileYsize)],
                       [0, Math.ceil((map.height/2 - 0.5)*tileYsize)],
@@ -524,6 +538,9 @@ let engine = (function (){
     }
     return i;
   }
+  //window.addEventListener('deviceorientation', handleOrientation);
+
+  
 
   function applyGesture(g) {
     let i, r, b = 0, result = 0;
@@ -656,6 +673,9 @@ let engine = (function (){
     player:         player,
 
   };
+  
+
+ 
 
   // Escuchar eventos de almacenamiento local para enviar al servidor
 window.addEventListener("storage", function(event) {
@@ -685,6 +705,7 @@ window.addEventListener("storage", function(event) {
 }());
 
 let map = engine.map;
+
 
 window.addEventListener("orientationchange", engine.onrotate);
 window.addEventListener("resize", engine.onresize);
@@ -734,5 +755,14 @@ preloader.start().then(() => {
     document.getElementById('credits').classList.add('hidden');
     engine.init();
     engine.startGame();
+
+
+    
+
+
+
+
   };
+
+  
 });
